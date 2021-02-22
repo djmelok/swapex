@@ -13,7 +13,8 @@
   "dependencies": {
     "@nuxtjs/pwa": "^3.3.5",
     "core-js": "^3.8.3",
-    "nuxt": "^2.14.12"
+    "nuxt": "^2.14.12",
+    "vue-swipe-actions": "^2.0.0-beta.20"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",
@@ -22,8 +23,10 @@
     "eslint": "^7.18.0",
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-vue": "^7.5.0",
+    "node-sass": "^4.12.0",
     "pug": "^3.0.0",
-    "node-sass": "^5.0.0",
-    "sass-loader": "^11.0.1"
+    "pug-plain-loader": "^1.1.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^2.0.0"
   }
 }
