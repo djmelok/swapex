@@ -1,7 +1,7 @@
 <template lang="pug">
 .index
   CardProfile.index__profile
-  SwipeList(ref="list", :disabled="!enabled", :items="coins", item-key="id", @swipeout:click="itemClick")
+  SwipeList(:items="coins", item-key="id", @swipeout:click="clickItem")
     template(v-slot="{ item }")
       CardCoin.index__coin(
         :logo="item.logo",
@@ -12,13 +12,13 @@
         :rate="item.rate",
         :ratePercent="item.ratePercent"
       )
-    template(v-slot:left="{ item, close }")
-      .swipeout-action.red
-        i.fas.fa-trash
-      .swipeout-action.purple(@click="close")
-        i.fas.fa-close
+    template(v-slot:left="{ item }")
+      .swipeout-action(@click="receiveCoin(item)")
+        i.fas.fa-arrow-down
+      .swipeout-action(@click="sendCoin(item)")
+        i.fas.fa-arrow-up
     template(v-slot:right="{ item }")
-      .swipeout-action(@click="remove(item)")
+      .swipeout-action(@click="removeCoin(item)")
         i.fas.fa-minus
 </template>
 
@@ -32,20 +32,29 @@ export default {
   },
   data() {
     return {
-      enabled: true,
       coins: [
         {
           id: 0,
+          logo: 'swapex.png',
+          shortName: 'SWX',
+          shortAmount: 0,
+          fullName: 'Swapex',
+          fullAmount: 0,
+          rate: 124.0,
+          ratePercent: 14.2
+        },
+        {
+          id: 1,
           logo: 'btc.png',
           shortName: 'BTC',
           shortAmount: 0,
           fullName: 'Bitcoin',
           fullAmount: 0,
-          rate: 54000,
+          rate: 54284.73,
           ratePercent: 1.7
         },
         {
-          id: 1,
+          id: 2,
           logo: 'eth.png',
           shortName: 'ETH',
           shortAmount: 0,
@@ -55,79 +64,87 @@ export default {
           ratePercent: -8.40
         },
         {
-          id: 2,
+          id: 3,
           logo: 'xmr.png',
           shortName: 'XMR',
           shortAmount: 0,
           fullName: 'Monero',
           fullAmount: 0,
-          rate: 112.01,
-          ratePercent: 0.22
+          rate: 212.01,
+          ratePercent: 0.24
+        },
+        {
+          id: 4,
+          logo: 'ltc.png',
+          shortName: 'LTC',
+          shortAmount: 0,
+          fullName: 'Litecoin',
+          fullAmount: 0,
+          rate: 202.19,
+          ratePercent: -0.9
+        },
+        {
+          id: 5,
+          logo: 'usdt.png',
+          shortName: 'USDT',
+          shortAmount: 0,
+          fullName: 'Tether OMNI',
+          fullAmount: 0,
+          rate: 1.01,
+          ratePercent: 0.17
         }
       ]
     }
   },
   methods: {
-    revealFirstRight() {
-      this.$refs.list.revealRight(0)
-    },
-    revealFirstLeft() {
-      this.$refs.list.revealLeft(0)
-    },
-    closeFirst() {
-      this.$refs.list.closeActions(0)
-    },
-    closeAll() {
-      this.$refs.list.closeActions()
-    },
-    remove(item) {
+    removeCoin(item) {
       this.coins = this.coins.filter(i => i !== item)
     },
-    itemClick(e) {
-      console.log(e, 'item click')
+    receiveCoin(e) {
+      console.log(e, 'receive coin')
     },
-    fbClick(e) {
-      console.log(e, 'First Button Click')
+    sendCoin(e) {
+      console.log(e, 'send coin')
     },
-    sbClick(e) {
-      console.log(e, 'Second Button Click')
+    clickItem(e) {
+      console.log(e, 'click item')
     }
   }
 }
 </script>
 
 <style lang="scss">
-.swipeout-list-item {
-  margin-top: 12px;
-}
+.swipeout {
+  $self: &;
 
-.swipeout-left,
-.swipeout-right {
-  display: flex;
-  align-items: center;
-}
+  &-list-item {
+    margin-top: 12px;
+  }
 
-.swipeout-left {
-  .swipeout-action {
+  &-left,
+  &-right {
+    display: flex;
+    align-items: center;
+  }
+
+  &-left #{$self}-action {
     margin-left: 0;
   }
-}
 
-.swipeout-right {
-  .swipeout-action {
+  &-right #{$self}-action {
     margin-right: 0;
   }
-}
 
-.swipeout-action {
-  width: 48px;
-  height: 48px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: #999;
-  margin: 12px;
-  color: #fff;
+  &-action {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background-color: #999;
+    margin: 12px;
+    color: #fff;
+  }
 }
 </style>

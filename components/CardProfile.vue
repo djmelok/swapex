@@ -5,16 +5,25 @@
     .card-profile__balance-date Сегодня, 22 Февр.
     ProfileBalance
   .card-profile__interactive
-    button.card-profile__interactive-add(type="button")
+    button.card-profile__interactive-append(type="button")
       | + Добавить актив
-    button.card-profile__interactive-hide(type="button", @click="TOGGLE_DATA")
-      i.far.fa-eye
+    button.card-profile__interactive-hiding(type="button", :class="getClassIcon", @click="TOGGLE_DATA")
+      i.card-profile__interactive-hiding-icon.far.fa-eye
+      i.card-profile__interactive-hiding-icon.far.fa-eye-slash
 </template>
 
 <script>
 import { mapActions } from 'vuex'
 
 export default {
+  computed: {
+    getClassIcon() {
+      return {
+        'card-profile__interactive-hiding--hide': !this.$store.state.isShowData
+      }
+    }
+
+  },
   methods: {
     ...mapActions(['TOGGLE_DATA'])
   }
@@ -54,7 +63,7 @@ export default {
     justify-content: space-between;
     align-items: flex-end;
 
-    &-add {
+    &-append {
       font-size: 10px;
       font-weight: bold;
       text-transform: uppercase;
@@ -64,10 +73,34 @@ export default {
       padding: 8px;
     }
 
-    &-hide {
-      width: max-content;
+    &-hiding {
+      $hiding: &;
+
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: #dadada;
       font-size: 24px;
+
+      &--hide {
+        #{$hiding}-icon {
+          &:first-child {
+            display: none;
+          }
+
+          &:last-child {
+            display: block;
+          }
+        }
+      }
+
+      &-icon {
+        &:last-child {
+          display: none;
+        }
+      }
     }
   }
 }

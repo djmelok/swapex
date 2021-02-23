@@ -1,14 +1,18 @@
 <template lang="pug">
 .layout-header
-  nuxt-link.layout-header__logo(to="/") Swapex
+  nuxt-link.layout-header__logo(to="/")
+    img(src="~/assets/images/logo.png")
+    span wapex
   ProfileBalance.layout-header__balance(:class="getDisplayClass")
   button.layout-header__button(type="button")
     i.fab.fa-telegram
-  button.layout-header__button(type="button")
+  button.layout-header__button(type="button", @click="OPEN_SIDEBAR")
     i.fas.fa-bars
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -29,6 +33,7 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    ...mapActions(['OPEN_SIDEBAR']),
     handleScroll() {
       this.scrollY = window.scrollY
     }
@@ -46,13 +51,23 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 2;
 
   &__logo {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
+    display: flex;
+    align-items: center;
     margin-right: auto;
+
+    img {
+      width: 32px;
+      height: 32px;
+    }
+
+    span {
+      font-size: 18px;
+      font-weight: 500;
+      color: #dadada;
+    }
   }
 
   &__balance {
@@ -72,7 +87,7 @@ export default {
   }
 
   &__button {
-    color: #fff;
+    color: #dadada;
     font-size: 24px;
 
     & + & {

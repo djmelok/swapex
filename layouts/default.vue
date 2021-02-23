@@ -3,34 +3,37 @@ div
   LayoutHeader
   nuxt.page
   LayoutFooter
+  LayoutSidebar
 </template>
 
-<style lang="scss">
-.page {
-  margin-top: 80px;
-  margin-bottom: 90px;
-  padding: 12px;
+<script>
+export default {
+  beforeDestroy() {
+    document.documentElement.removeAttribute('style')
+    window.removeEventListener('resize', this.resizeHandler)
+  },
+  mounted() {
+    this.resizeHandler()
+    window.addEventListener('resize', this.resizeHandler)
+  },
+  methods: {
+    resizeHandler() {
+      if (window.innerHeight === this.oldHeight) return
+      const vh = window.innerHeight * 0.01
+      document.documentElement.style.setProperty('--vh', `${vh}px`)
+      this.oldHeight = window.innerHeight
+    }
+  }
 }
+</script>
 
-html {
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+<style lang="scss">
+body {
   background-color: #141414;
 }
 
-html,
-button {
-  font-size: 18px;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  outline: none;
-  border: none;
-  background: none;
-  text-decoration: none;
+.page {
+  margin: 80px 0 90px 0;
+  padding: 12px;
 }
 </style>

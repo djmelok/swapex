@@ -55,7 +55,7 @@ export default {
   computed: {
     getVisibilityClass() {
       return {
-        'card-coin--hide': !this.$store.state.visibilityData
+        'card-coin--hide': !this.$store.state.isShowData
       }
     },
     getTrendClass() {

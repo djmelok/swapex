@@ -1,17 +1,17 @@
 <template lang="pug">
 .layout-footer
   nuxt-link.layout-footer__link(to="/")
-    i.fas.fa-shopping-cart
-    | Купить
+    i.layout-footer__link-icon.fas.fa-shopping-cart
+    span.layout-footer__link-text Купить
   nuxt-link.layout-footer__link(to="/")
-    i.fas.fa-sync-alt
-    | Обменять
+    i.layout-footer__link-icon.fas.fa-sync-alt
+    span.layout-footer__link-text Обменять
   nuxt-link.layout-footer__link(to="/")
-    i.fas.fa-money-bill-alt
-    | Продать
+    i.layout-footer__link-icon.fas.fa-money-bill-alt
+    span.layout-footer__link-text Продать
   nuxt-link.layout-footer__link(to="/")
-    i.far.fa-window-restore
-    | Проверить
+    i.layout-footer__link-icon.far.fa-window-restore
+    span.layout-footer__link-text Проверить
 </template>
 
 <style lang="scss">
@@ -24,16 +24,22 @@
   padding: 24px;
   position: fixed;
   bottom: 0;
-  z-index: 1;
+  z-index: 2;
 
   &__link {
     display: flex;
     flex-direction: column;
     align-items: center;
-    color: #999;
 
-    i {
+    &-icon {
       color: #dadada;
+      font-size: 16px;
+    }
+
+    &-text {
+      margin-top: 4px;
+      color: #999;
+      font-size: 12px;
     }
   }
 }

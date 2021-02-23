@@ -4,7 +4,7 @@ button.profile-balance(
   @mousedown="touchShow",
   @mouseleave="touchHide",
   @mouseup="touchHide",
-  @touchtouchShow="touchShow",
+  @touchstart="touchShow",
   @touchend="touchHide",
   @touchcancel="touchHide",
   type="button"
@@ -26,14 +26,14 @@ export default {
   computed: {
     getVisibilityClass() {
       return {
-        'profile-balance--hide': !this.$store.state.visibilityData
+        'profile-balance--hide': !this.$store.state.isShowData
       }
     }
   },
   methods: {
     ...mapActions(['SHOW_DATA', 'HIDE_DATA', 'TOGGLE_DATA']),
     touchShow() {
-      if (this.$store.state.visibilityData) return
+      if (this.$store.state.isShowData) return
 
       this.isTouchShow = true
       this.SHOW_DATA()
