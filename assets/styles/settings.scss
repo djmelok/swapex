@@ -9,12 +9,7 @@
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   padding: 0;
-}
 
-body{
-  font-size: 18px;
-  overflow-x: hidden;
-  overflow-y: auto;
 
   &::-webkit-scrollbar {
     width: 4px;
@@ -25,6 +20,12 @@ body{
     border-radius: 12px;
     background: linear-gradient(to right, #f8880f, #ed5314);
   }
+}
+
+body{
+  font-size: 18px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 button{

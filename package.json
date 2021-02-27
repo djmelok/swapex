@@ -15,6 +15,7 @@
     "core-js": "^3.8.3",
     "normalize.css": "^8.0.1",
     "nuxt": "^2.14.12",
+    "v-mask": "^2.2.4",
     "vue-swipe-actions": "^2.0.0-beta.20"
   },
   "devDependencies": {

@@ -105,7 +105,6 @@ export default {
     &-title {
       margin: 0 auto;
       text-transform: uppercase;
-      font-size: 18px;
       font-weight: 500;
       color: #b8b8b8;
     }
@@ -113,8 +112,8 @@ export default {
     &-button {
       width: 24px;
       margin-left: -24px;
+      color: #dadada;
       font-size: 24px;
-      color: #b8b8b8;
     }
   }
 

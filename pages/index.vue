@@ -1,25 +1,29 @@
 <template lang="pug">
 .index
-  CardProfile.index__profile
-  SwipeList(:items="coins", item-key="id", @swipeout:click="clickItem")
-    template(v-slot="{ item }")
-      CardCoin.index__coin(
-        :logo="item.logo",
-        :shortName="item.shortName",
-        :shortAmount="item.shortAmount",
-        :fullName="item.fullName",
-        :fullAmount="item.fullAmount",
-        :rate="item.rate",
-        :ratePercent="item.ratePercent"
-      )
-    template(v-slot:left="{ item }")
-      .swipeout-action(@click="receiveCoin(item)")
-        i.fas.fa-arrow-down
-      .swipeout-action(@click="sendCoin(item)")
-        i.fas.fa-arrow-up
-    template(v-slot:right="{ item }")
-      .swipeout-action(@click="removeCoin(item)")
-        i.fas.fa-minus
+  LayoutHeader
+  LayoutSidebar
+  .index__content
+    CardProfile
+    SwipeList(:items="coins", item-key="id", @swipeout:click="clickItem")
+      template(v-slot="{ item }")
+        CardCoin(
+          :logo="item.logo",
+          :shortName="item.shortName",
+          :shortAmount="item.shortAmount",
+          :fullName="item.fullName",
+          :fullAmount="item.fullAmount",
+          :rate="item.rate",
+          :ratePercent="item.ratePercent"
+        )
+      template(v-slot:left="{ item }")
+        .swipeout-action(@click="receiveCoin(item)")
+          i.fas.fa-arrow-down
+        .swipeout-action(@click="sendCoin(item)")
+          i.fas.fa-arrow-up
+      template(v-slot:right="{ item }")
+        .swipeout-action(@click="removeCoin(item)")
+          i.fas.fa-minus
+  LayoutNav
 </template>
 
 <script>
@@ -114,6 +118,12 @@ export default {
 </script>
 
 <style lang="scss">
+.index {
+  &__content {
+    margin: 80px 0;
+    padding: 12px;
+  }
+}
 .swipeout {
   $self: &;
 

@@ -1,9 +1,5 @@
 <template lang="pug">
-div
-  LayoutHeader
-  nuxt.page
-  LayoutFooter
-  LayoutSidebar
+nuxt
 </template>
 
 <script>
@@ -30,10 +26,5 @@ export default {
 <style lang="scss">
 body {
   background-color: #141414;
-}
-
-.page {
-  margin: 80px 0 90px 0;
-  padding: 12px;
 }
 </style>

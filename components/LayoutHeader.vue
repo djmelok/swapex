@@ -64,7 +64,6 @@ export default {
     }
 
     span {
-      font-size: 18px;
       font-weight: 500;
       color: #dadada;
     }

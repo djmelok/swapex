@@ -65,7 +65,6 @@ export default {
     #{$self}__invisible {
       display: block;
       margin: auto 0;
-      font-size: 18px;
       color: #dadada;
 
       svg {
