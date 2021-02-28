@@ -17,9 +17,9 @@
         )
       template(v-slot:left="{ item }")
         .swipeout-action(@click="receiveCoin(item)")
-          i.fas.fa-arrow-down
+          img.swipeout-action__img(src="~/assets/images/icons/arrow_line_down_left.png")
         .swipeout-action(@click="sendCoin(item)")
-          i.fas.fa-arrow-up
+          img.swipeout-action__img(src="~/assets/images/icons/arrow_line_up_right.png")
       template(v-slot:right="{ item }")
         .swipeout-action(@click="removeCoin(item)")
           i.fas.fa-minus
@@ -155,6 +155,12 @@ export default {
     background-color: #999;
     margin: 12px;
     color: #fff;
+
+    &__img {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+    }
   }
 }
 </style>

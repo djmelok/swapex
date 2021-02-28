@@ -7,33 +7,50 @@
   .buy__content
     .buy__content-operation
       .buy__content-operation-title
-        i.fas.fa-lock
-        span Отдать
-      .buy__content-operation-count 0.00
-      BaseSelect.buy__content-operation-select(:options="selectOptions", @input="selectHandler")
+        img.buy__content-operation-title-img(src="~/assets/images/icons/arrow_line_up_right.png")
+        span.buy__content-operation-title-text Отдать
+      input.buy__content-operation-input(v-model.number="inputSend", inputmode="decimal", type="number", value="", placeholder="0.00")
+      BaseSelect.buy__content-operation-select(:options="selectSend", @input="selectHandler")
     .buy__content-payment
-      button.buy__content-payment-choice(type="button") VISA
+      button.buy__content-payment-choice(type="button")
+        img(src="~/assets/images/icons/visa-master-dark.png")
       .buy__content-payment-line
       button.buy__content-payment-lock(type="button")
         i.fas.fa-lock
     .buy__content-operation
       .buy__content-operation-title
-        i.fas.fa-lock
-        span Получить
-      .buy__content-operation-count 0.00
-      BaseSelect.buy__content-operation-select(:options="selectOptions", @input="selectHandler")
-    .buy__content-card
-    CreditForm
+        img.buy__content-operation-title-img(src="~/assets/images/icons/arrow_line_down_left.png")
+        span.buy__content-operation-title-text Получить
+      input.buy__content-operation-input(v-model.number="inputReceive", inputmode="decimal", type="number", value="", placeholder="0.00")
+      BaseSelect.buy__content-operation-select(:options="selectReceive", @input="selectHandler")
+    CreditForm.buy__content-card(@editCardHandler="editCardHandler", @savedCardHandler="savedCardHandler")
+    button.buy__content-button.primary-button(v-if="isValidAction", type="button") Купить
 </template>
 
 <script>
 export default {
   data() {
     return {
-      selectOptions: ['BTC', 'ETH', 'LTC']
+      selectSend: ['EUR', 'USD', 'RUB'],
+      selectReceive: ['BTC', 'ETH', 'LTC'],
+      editingCard: false,
+      savedCard: false,
+      inputSend: null,
+      inputReceive: null
+    }
+  },
+  computed: {
+    isValidAction() {
+      return !this.editingCard && this.savedCard
     }
   },
   methods: {
+    editCardHandler(value) {
+      this.editingCard = value
+    },
+    savedCardHandler(value) {
+      this.savedCard = value
+    },
     selectHandler(e) {
       console.log('Select: ', e)
     }
@@ -54,7 +71,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 4;
 
     &-text {
       font-weight: 500;
@@ -71,6 +88,8 @@ export default {
   }
 
   &__content {
+    display: flex;
+    flex-direction: column;
     margin-top: 88px;
 
     &-operation {
@@ -80,16 +99,28 @@ export default {
       color: #dadada;
 
       &-title {
-        font-size: 14px;
+        display: flex;
+        align-items: center;
 
         span {
           margin-left: 8px;
         }
+
+        img {
+          width: 24px;
+          height: 24px;
+          filter: invert(1) contrast(0.5);
+        }
       }
 
-      &-count {
-        font-size: 42px;
+      &-input {
+        width: 100%;
         grid-column: 1;
+        font-size: 56px;
+        color: #dadada;
+        background: none;
+        border: none;
+        outline: none;
       }
 
       &-select {
@@ -103,13 +134,18 @@ export default {
       margin: 32px 0;
 
       &-choice {
-        width: 120px;
+        width: 140px;
+        height: 60px;
         display: flex;
         justify-content: center;
         align-items: center;
         border-radius: 12px;
         background-color: #dadada;
-        padding: 12px;
+        padding: 16px;
+
+        img {
+          width: 100%;
+        }
       }
 
       &-line {
@@ -124,6 +160,15 @@ export default {
         border-radius: 12px;
         background-color: #dadada;
       }
+    }
+
+    &-card {
+      margin: 32px auto;
+    }
+
+    &-button {
+      width: 180px;
+      margin: 0 auto;
     }
   }
 }

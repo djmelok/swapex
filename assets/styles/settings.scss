@@ -34,3 +34,15 @@ button{
   background-color: transparent;
   cursor: pointer;
 }
+
+.primary-button {
+    width: 100%;
+    padding: 16px 0;
+    background-color: #f8880f;
+    border: none;
+    border-radius: 6px;
+    font-size: 22px;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+}

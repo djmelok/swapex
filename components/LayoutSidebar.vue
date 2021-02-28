@@ -70,7 +70,7 @@ export default {
 <style lang="scss">
 .layout-sidebar {
   width: 100%;
-  height: calc((var(--vh, 1vh) * 100));
+  min-height: 100vh;
   background: #141414;
   transform: translateX(100%);
   transition: transform 0.3s ease;

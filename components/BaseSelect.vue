@@ -52,9 +52,10 @@ export default {
 .base-select {
   $self: &;
 
-  width: 120px;
+  width: 140px;
   position: relative;
   outline: none;
+  z-index: 2;
 
   &--opened {
     #{$self}__selected {
@@ -74,7 +75,7 @@ export default {
   &__items-option {
     display: flex;
     align-items: center;
-    padding: 8px 12px;
+    padding: 18px;
     user-select: none;
     cursor: pointer;
   }
@@ -107,6 +108,7 @@ export default {
 
     &-option {
       user-select: none;
+      border-top: 1px solid #141414;
 
       &:hover {
         background-color: #f8880f;

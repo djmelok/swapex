@@ -1,116 +1,127 @@
 <template lang="pug">
-#app.wrapper
-  .card-form
-    .card-list
-      .card-item(:class="{ '-active': isCardFlipped }")
-        .card-item__side.-front
-          .card-item__focus(:class="{ '-active': focusElementStyle }", :style="focusElementStyle", ref="focusElement")
-          .card-item__cover
-            img.card-item__bg(:src="`/images/credit-form/backgrounds/${currentCardBackground}.jpeg`")
-          .card-item__wrapper
-            .card-item__top
-              img.card-item__chip(src="/images/credit-form/chip.png")
-              .card-item__type
-                transition(name="slide-fade-up")
-                  img.card-item__typeImg(:src="`/images/credit-form/types/${getCardType}.png`", v-if="getCardType", :key="getCardType", alt="")
-            label.card-item__number(for="cardNumber", ref="cardNumber")
-              template(v-if="getCardType === 'amex'")
-                span(v-for="(n, $index) in amexCardMask", :key="$index")
-                  transition(name="slide-fade-up")
-                    .card-item__numberItem(v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== ''")
-                      | *
-                    .card-item__numberItem(:class="{ '-active': n.trim() === '' }", :key="$index", v-else-if="cardNumber.length > $index")
-                      | {{ cardNumber[$index] }}
-                    .card-item__numberItem(:class="{ '-active': n.trim() === '' }", v-else, :key="$index + 1")
-                      | {{ n }}
-              template(v-else)
-                span(v-for="(n, $index) in otherCardMask", :key="$index")
-                  transition(name="slide-fade-up")
-                    .card-item__numberItem(v-if="$index > 4 && $index < 15 && cardNumber.length > $index && n.trim() !== ''")
-                      | *
-                    .card-item__numberItem(:class="{ '-active': n.trim() === '' }", :key="$index", v-else-if="cardNumber.length > $index")
-                      | {{ cardNumber[$index] }}
-                    .card-item__numberItem(:class="{ '-active': n.trim() === '' }", v-else, :key="$index + 1")
-                      | {{ n }}
-            .card-item__content
-              label.card-item__info(for="cardName", ref="cardName")
-                .card-item__holderCard Holder
-                transition(name="slide-fade-up")
-                  .card-item__name(v-if="cardName.length", key="1")
-                    transition-group(name="slide-fade-right")
-                      span.card-item__nameItem(v-for="(n, $index) in getCardName", :key="$index + 1")
-                        | {{ n }}
-                  .card-item__name(v-else, key="2") Full Name
-              .card-item__date(ref="cardDate")
-                label.card-item__dateTitle(for="cardMonth") Expires
-                label.item__dateItem(for="cardMonth")
-                  transition(name="slide-fade-up")
-                    span(v-if="cardMonth", :key="cardMonth")
-                      | {{ cardMonth }}
-                    span(v-else, key="2") MM
-                | /
-                label.card-item__dateItem(for="cardYear")
-                  transition(name="slide-fade-up")
-                    span(v-if="cardYear", :key="cardYear")
-                      | {{ String(cardYear).slice(2, 4) }}
-                    span(v-else, key="2") YY
-        .card-item__side.-back
-          .card-item__cover
-            img.card-item__bg(:src="`/images/credit-form/backgrounds/${currentCardBackground}.png`")
-          .card-item__band
-          .card-item__cvv
-            .card-item__cvvTitle CVV
-            .card-item__cvvBand
-              span(v-for="(n, $index) in cardCvv", :key="$index") *
+form.card-form(@submit.prevent="sumbitSaveCard", method="post")
+  .card-list
+    .card-item(:class="{ '-active': isCardFlipped }")
+      .card-item__overlay(v-if="!saveCard.number.length && !editing", @click="editing = true")
+        .card-item__overlay-text
+          | Добавить карту
+          i.card-item__overlay-text-icon.fas.fa-credit-card
+      .card-item__side.-front
+        .card-item__focus(:class="{ '-active': focusElementStyle }", :style="focusElementStyle", ref="focusElement")
+        .card-item__cover
+          img.card-item__bg(:src="`/images/credit-form/backgrounds/${currentCardBackground}.jpeg`")
+        .card-item__wrapper
+          .card-item__top
+            img.card-item__chip(src="/images/credit-form/chip.png")
             .card-item__type
-              img.item__typeImg(:src="`/images/credit-form/types/${getCardType}.png`", v-if="getCardType")
-    .card-form__inner
-      .card-input
-        label.card-input__label(for="cardNumber") Card Number
+              transition(name="slide-fade-up")
+                img.card-item__typeImg(:src="`/images/credit-form/types/${getCardType}.png`", v-if="getCardType", :key="getCardType", alt="")
+          label.card-item__number(for="cardNumber", ref="cardNumber")
+            template(v-if="getCardType === 'amex'")
+              span(v-for="(n, $index) in amexCardMask", :key="$index")
+                transition(name="slide-fade-up")
+                  .card-item__numberItem(v-if="$index > 4 && $index < 14 && cardNumber.length > $index && n.trim() !== ''")
+                    | *
+                  .card-item__numberItem(:class="{ '-active': n.trim() === '' }", :key="$index", v-else-if="cardNumber.length > $index")
+                    | {{ cardNumber[$index] }}
+                  .card-item__numberItem(:class="{ '-active': n.trim() === '' }", v-else, :key="$index + 1")
+                    | {{ n }}
+            template(v-else)
+              span(v-for="(n, $index) in otherCardMask", :key="$index")
+                transition(name="slide-fade-up")
+                  .card-item__numberItem(v-if="$index > 4 && $index < 15 && cardNumber.length > $index && n.trim() !== ''")
+                    | *
+                  .card-item__numberItem(:class="{ '-active': n.trim() === '' }", :key="$index", v-else-if="cardNumber.length > $index")
+                    | {{ cardNumber[$index] }}
+                  .card-item__numberItem(:class="{ '-active': n.trim() === '' }", v-else, :key="$index + 1")
+                    | {{ n }}
+          .card-item__content
+            label.card-item__info(for="cardName", ref="cardName")
+              .card-item__holderCard Имя
+              transition(name="slide-fade-up")
+                .card-item__name(v-if="cardName.length", key="1")
+                  transition-group(name="slide-fade-right")
+                    span.card-item__nameItem(v-for="(n, $index) in getCardName", :key="$index + 1")
+                      | {{ n }}
+                .card-item__name(v-else, key="2") Ф.И.О
+            .card-item__date(ref="cardDate")
+              label.card-item__dateTitle(for="cardMonth") Дата
+              label.item__dateItem(for="cardMonth")
+                transition(name="slide-fade-up")
+                  span(v-if="cardMonth", :key="cardMonth")
+                    | {{ cardMonth }}
+                  span(v-else, key="2") ММ
+              | /
+              label.card-item__dateItem(for="cardYear")
+                transition(name="slide-fade-up")
+                  span(v-if="cardYear", :key="cardYear")
+                    | {{ String(cardYear).slice(2, 4) }}
+                  span(v-else, key="2") ГГ
+      .card-item__side.-back
+        .card-item__cover
+          img.card-item__bg(:src="`/images/credit-form/backgrounds/${currentCardBackground}.jpeg`")
+        .card-item__band
+        .card-item__cvv
+          .card-item__cvvTitle CVV
+          .card-item__cvvBand
+            span(v-for="(n, $index) in cardCvv", :key="$index") *
+          .card-item__type
+            img.card-item__typeImg(:src="`/images/credit-form/types/${getCardType}.png`", v-if="getCardType")
+  .card-form__inner(v-show="editing")
+    .card-input
+      label.card-input__label(for="cardNumber") Номер карты
+      .card-input__field
         input#cardNumber.card-input__input(
           type="text",
+          inputmode="numeric",
+          :class="{ 'card-input__input--error': errors.number.length }",
           v-mask="generateCardNumberMask",
           v-model="cardNumber",
           @focus="focusInput",
           @blur="blurInput",
           data-ref="cardNumber",
-          autocomplete="off"
+          autocomplete="off",
+          required
         )
-      .card-input
-        label.card-input__label(for="cardName") Card Holders
-        input#cardName.card-input__input(
-          type="text",
-          v-model="cardName",
-          @focus="focusInput",
-          @blur="blurInput",
-          data-ref="cardName",
-          autocomplete="off"
-        )
-      .card-form__row
-        .card-form__col
-          .card-form__group
-            label.card-input__label(for="cardMonth") Expiration Date
-            select#cardMonth.card-input__input.-select(v-model="cardMonth", @focus="focusInput", @blur="blurInput", data-ref="cardDate")
-              option(value="", disabled, selected) Month
-              option(:value="n < 10 ? '0' + n : n", v-for="n in 12", :disabled="n < minCardMonth", :key="n")
-                | {{ n < 10 ? '0' + n : n }}
-            select#cardYear.card-input__input.-select(v-model="cardYear", @focus="focusInput", @blur="blurInput", data-ref="cardDate")
-              option(value="", disabled, selected) Year
-              option(:value="$index + minCardYear", v-for="(n, $index) in 12", :key="n")
-                | {{ $index + minCardYear }}
-        .card-form__col.-cvv
-          .card-input
-            label.card-input__label(for="cardCvv") CVV
-            input#cardCvv.card-input__input(
-              type="text",
-              v-mask="'####'",
-              maxlength="4",
-              v-model="cardCvv",
-              @focus="flipCard(true)",
-              @blur="flipCard(false)",
-              autocomplete="off"
-            )
-      button.card-form__button Submit
+        .card-input__input-error(v-if="errors.number.length") {{ errors.number }}
+    .card-input
+      label.card-input__label(for="cardName") Имя владельца
+      input#cardName.card-input__input(
+        type="text",
+        v-model="cardName",
+        @focus="focusInput",
+        @blur="blurInput",
+        data-ref="cardName",
+        autocomplete="off",
+        required
+      )
+    .card-form__row
+      .card-form__col
+        .card-form__group
+          label.card-input__label(for="cardMonth") Дата окончания срока
+          select#cardMonth.card-input__input.-select(v-model="cardMonth", @focus="focusInput", @blur="blurInput", data-ref="cardDate")
+            option(value="", disabled, selected) Месяц
+            option(:value="n < 10 ? '0' + n : n", v-for="n in 12", :disabled="n < minCardMonth", :key="n")
+              | {{ n < 10 ? '0' + n : n }}
+          select#cardYear.card-input__input.-select(v-model="cardYear", @focus="focusInput", @blur="blurInput", data-ref="cardDate")
+            option(value="", disabled, selected) Год
+            option(:value="$index + minCardYear", v-for="(n, $index) in 12", :key="n")
+              | {{ $index + minCardYear }}
+      .card-form__col.-cvv
+        .card-input
+          label.card-input__label(for="cardCvv") CVV
+          input#cardCvv.card-input__input(
+            type="text",
+            inputmode="numeric",
+            v-mask="'####'",
+            maxlength="4",
+            v-model="cardCvv",
+            @focus="flipCard(true)",
+            @blur="flipCard(false)",
+            autocomplete="off",
+            required
+          )
+    button.card-form__button.primary-button(type="sumbit") Сохранить
 </template>
 
 <script>
@@ -129,7 +140,22 @@ export default {
       cardNumberTemp: '',
       isCardFlipped: false,
       focusElementStyle: null,
-      isInputFocused: false
+      isInputFocused: false,
+      editing: false,
+      errors: {
+        number: '',
+        name: '',
+        mounth: '',
+        year: '',
+        cvv: ''
+      },
+      saveCard: {
+        number: '',
+        name: '',
+        mounth: 0,
+        year: 0,
+        cvv: 0
+      }
     }
   },
   computed: {
@@ -149,7 +175,10 @@ export default {
       re = /^9792'/
       if (this.cardNumber.match(re) != null) return 'troy'
 
-      return 'visa'
+      re = /^2/
+      if (this.cardNumber.match(re) != null) return 'mir'
+
+      return 'none'
     },
     getCardName() {
       return this.cardName.replace(/\s\s+/g, ' ')
@@ -163,6 +192,9 @@ export default {
     }
   },
   watch: {
+    editing(value) {
+      this.$emit('editCardHandler', value)
+    },
     cardYear() {
       if (this.cardMonth < this.minCardMonth) {
         this.cardMonth = ''
@@ -195,83 +227,62 @@ export default {
         }
       }, 300)
       vm.isInputFocused = false
+    },
+    sumbitSaveCard() {
+      this.errors.number = ''
+
+      if (this.getCardType === 'none' || this.cardNumber.length < 17) {
+        this.errors.number = 'Неправильный формат карты'
+        return false
+      }
+
+      this.saveCard.number = this.cardNumber
+      this.saveCard.name = this.cardName
+      this.saveCard.month = this.cardMonth
+      this.saveCard.year = this.cardYear
+      this.saveCard.cvv = this.cardCvv
+
+      this.editing = false
+      this.$emit('savedCardHandler', true)
     }
   }
 }
 </script>
 
 <style lang="scss">
-.wrapper {
-  background: #ddeefc;
-  font-family: "Source Sans Pro", sans-serif;
-  font-size: 16px;
-  min-height: 100vh;
-  display: flex;
-  padding: 50px 15px;
-  @media screen and (max-width: 700px), (max-height: 500px) {
-    flex-wrap: wrap;
-    flex-direction: column;
-  }
-}
-
 .card-form {
   max-width: 570px;
-  margin: auto;
   width: 100%;
-
-  @media screen and (max-width: 576px) {
-    margin: 0 auto;
-  }
+  outline: none;
 
   &__inner {
-    background: #fff;
-    box-shadow: 0 30px 60px 0 rgba(90, 116, 148, 0.4);
+    position: relative;
+    background-color: #fff;
     border-radius: 10px;
-    padding: 35px;
-    padding-top: 180px;
+    padding: 24px;
+    padding-top: 80px;
+    margin-top: -70px;
 
-    @media screen and (max-width: 480px) {
-      padding: 25px;
-      padding-top: 165px;
-    }
     @media screen and (max-width: 360px) {
       padding: 15px;
-      padding-top: 165px;
+      padding-top: 80px;
     }
   }
 
   &__row {
     display: flex;
     align-items: flex-start;
-    @media screen and (max-width: 480px) {
-      flex-wrap: wrap;
-    }
+    flex-wrap: wrap;
   }
 
   &__col {
-    flex: auto;
-    margin-right: 35px;
+    width: 100%;
+    flex: unset;
+    margin-bottom: 20px;
+    margin-right: 0;
 
     &:last-child {
-      margin-right: 0;
-    }
-
-    @media screen and (max-width: 480px) {
-      margin-right: 0;
-      flex: unset;
-      width: 100%;
-      margin-bottom: 20px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-    }
-
-    &.-cvv {
-      max-width: 150px;
-      @media screen and (max-width: 480px) {
-        max-width: initial;
-      }
+      margin-bottom: 0;
     }
   }
 
@@ -291,39 +302,18 @@ export default {
   }
 
   &__button {
-    width: 100%;
-    height: 55px;
-    background: #2364d2;
-    border: none;
-    border-radius: 5px;
-    font-size: 22px;
-    font-weight: 500;
-    font-family: "Source Sans Pro", sans-serif;
-    box-shadow: 3px 10px 20px 0px rgba(35, 100, 210, 0.3);
-    color: #fff;
-    margin-top: 20px;
-    cursor: pointer;
-
-    @media screen and (max-width: 480px) {
-      margin-top: 10px;
-    }
+    margin-top: 10px;
   }
 }
 
 .card-item {
-  max-width: 430px;
-  height: 270px;
+  max-width: 300px;
+  width: 90%;
+  height: 200px;
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  z-index: 2;
-  width: 100%;
-
-  @media screen and (max-width: 480px) {
-    max-width: 310px;
-    height: 220px;
-    width: 90%;
-  }
+  z-index: 1;
 
   @media screen and (max-width: 360px) {
     height: 180px;
@@ -340,9 +330,42 @@ export default {
     }
   }
 
+  &__overlay {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border: 2px dashed #dadada;
+    border-radius: 15px;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-color: rgba(20, 20, 20, 0.8);
+    cursor: pointer;
+
+    &--hide {
+      display: none;
+    }
+
+    &-text {
+      width: 100%;
+      background-color: #dadada;
+      text-align: center;
+      text-transform: uppercase;
+      color: #141414;
+      padding: 16px;
+
+      &-icon {
+        margin-left: 8px;
+      }
+    }
+  }
+
   &__focus {
     position: absolute;
-    z-index: 3;
+    z-index: 2;
     border-radius: 5px;
     left: 0;
     top: 0;
@@ -375,28 +398,32 @@ export default {
   &__side {
     border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 20px 60px 0 rgba(14, 42, 90, 0.55);
     transform: perspective(2000px) rotateY(0deg) rotateX(0deg) rotate(0deg);
     transform-style: preserve-3d;
-    transition: all 0.8s cubic-bezier(0.71, 0.03, 0.56, 0.85);
+    transition: transform 0.8s cubic-bezier(0.71, 0.03, 0.56, 0.85);
     backface-visibility: hidden;
     height: 100%;
 
+    @media screen and (max-width: 768px) {
+      transition: none;
+    }
+
     &.-back {
+      width: 100%;
+      height: 100%;
+      padding: 0;
       position: absolute;
       top: 0;
       left: 0;
-      width: 100%;
+      z-index: 1;
       transform: perspective(2000px) rotateY(-180deg) rotateX(0deg) rotate(0deg);
-      z-index: 2;
-      padding: 0;
-      height: 100%;
 
       .card-item__cover {
         transform: rotateY(-180deg);
       }
     }
   }
+
   &__bg {
     max-width: 100%;
     display: block;
@@ -405,6 +432,7 @@ export default {
     width: 100%;
     object-fit: cover;
   }
+
   &__cover {
     height: 100%;
     background-color: #1c1d27;
@@ -431,40 +459,31 @@ export default {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 40px;
+    margin-bottom: 25px;
     padding: 0 10px;
 
-    @media screen and (max-width: 480px) {
-      margin-bottom: 25px;
-    }
     @media screen and (max-width: 360px) {
       margin-bottom: 15px;
     }
   }
 
   &__chip {
-    width: 60px;
-    @media screen and (max-width: 480px) {
-      width: 50px;
-    }
+    width: 50px;
+
     @media screen and (max-width: 360px) {
       width: 40px;
     }
   }
 
   &__type {
-    height: 45px;
+    max-width: 90px;
+    width: 100%;
+    height: 40px;
     position: relative;
     display: flex;
     justify-content: flex-end;
-    max-width: 100px;
     margin-left: auto;
-    width: 100%;
 
-    @media screen and (max-width: 480px) {
-      height: 40px;
-      max-width: 90px;
-    }
     @media screen and (max-width: 360px) {
       height: 30px;
     }
@@ -481,52 +500,36 @@ export default {
     color: #fff;
     width: 100%;
     max-width: calc(100% - 85px);
-    padding: 10px 15px;
+    padding: 10px;
     font-weight: 500;
     display: block;
-
     cursor: pointer;
-
-    @media screen and (max-width: 480px) {
-      padding: 10px;
-    }
   }
 
   &__holder {
     opacity: 0.7;
-    font-size: 13px;
-    margin-bottom: 6px;
-    @media screen and (max-width: 480px) {
-      font-size: 12px;
-      margin-bottom: 5px;
-    }
+    font-size: 12px;
+    margin-bottom: 5px;
   }
 
   &__wrapper {
-    font-family: "Source Code Pro", monospace;
-    padding: 25px 15px;
+    padding: 20px 10px;
     position: relative;
-    z-index: 4;
+    z-index: 3;
     height: 100%;
-    text-shadow: 7px 6px 10px rgba(14, 42, 90, 0.8);
     user-select: none;
-    @media screen and (max-width: 480px) {
-      padding: 20px 10px;
-    }
   }
 
   &__name {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1;
     white-space: nowrap;
     max-width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     text-transform: uppercase;
-    @media screen and (max-width: 480px) {
-      font-size: 16px;
-    }
   }
+
   &__nameItem {
     display: inline-block;
     min-width: 8px;
@@ -534,20 +537,14 @@ export default {
   }
 
   &__number {
+    font-size: 21px;
     font-weight: 500;
     line-height: 1;
     color: #fff;
-    font-size: 27px;
-    margin-bottom: 35px;
     display: inline-block;
-    padding: 10px 15px;
+    margin-bottom: 15px;
+    padding: 10px;
     cursor: pointer;
-
-    @media screen and (max-width: 480px) {
-      font-size: 21px;
-      margin-bottom: 15px;
-      padding: 10px 10px;
-    }
 
     @media screen and (max-width: 360px) {
       font-size: 19px;
@@ -557,18 +554,11 @@ export default {
   }
 
   &__numberItem {
-    width: 16px;
+    width: 13px;
     display: inline-block;
+
     &.-active {
-      width: 30px;
-    }
-
-    @media screen and (max-width: 480px) {
-      width: 13px;
-
-      &.-active {
-        width: 16px;
-      }
+      width: 16px;
     }
 
     @media screen and (max-width: 360px) {
@@ -588,18 +578,14 @@ export default {
 
   &__date {
     flex-wrap: wrap;
-    font-size: 18px;
+    font-size: 16px;
     margin-left: auto;
     padding: 10px;
     display: inline-flex;
-    width: 80px;
+    width: 90px;
     white-space: nowrap;
     flex-shrink: 0;
     cursor: pointer;
-
-    @media screen and (max-width: 480px) {
-      font-size: 16px;
-    }
   }
 
   &__dateItem {
@@ -610,27 +596,22 @@ export default {
     }
   }
 
+  &__holderCard,
   &__dateTitle {
     opacity: 0.7;
-    font-size: 13px;
-    padding-bottom: 6px;
+    font-size: 12px;
+    padding-bottom: 5px;
     width: 100%;
-
-    @media screen and (max-width: 480px) {
-      font-size: 12px;
-      padding-bottom: 5px;
-    }
   }
+
   &__band {
     background: rgba(0, 0, 19, 0.8);
     width: 100%;
     height: 50px;
-    margin-top: 30px;
+    margin-top: 20px;
     position: relative;
-    z-index: 2;
-    @media screen and (max-width: 480px) {
-      margin-top: 20px;
-    }
+    z-index: 1;
+
     @media screen and (max-width: 360px) {
       height: 40px;
       margin-top: 10px;
@@ -640,16 +621,14 @@ export default {
   &__cvv {
     text-align: right;
     position: relative;
-    z-index: 2;
-    padding: 15px;
+    padding: 12px;
+    z-index: 1;
+
     .card-item__type {
       opacity: 0.7;
     }
-
-    @media screen and (max-width: 360px) {
-      padding: 10px 15px;
-    }
   }
+
   &__cvvTitle {
     padding-right: 10px;
     font-size: 15px;
@@ -657,71 +636,62 @@ export default {
     color: #fff;
     margin-bottom: 5px;
   }
+
   &__cvvBand {
-    height: 45px;
-    background: #fff;
-    margin-bottom: 30px;
+    height: 40px;
+    background-color: #fff;
+    margin-bottom: 12px;
     text-align: right;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     padding-right: 10px;
-    color: #1a3b5d;
     font-size: 18px;
     border-radius: 4px;
-    box-shadow: 0px 10px 20px -7px rgba(32, 56, 117, 0.35);
-
-    @media screen and (max-width: 480px) {
-      height: 40px;
-      margin-bottom: 20px;
-    }
-
-    @media screen and (max-width: 360px) {
-      margin-bottom: 15px;
-    }
-  }
-}
-
-.card-list {
-  margin-bottom: -130px;
-
-  @media screen and (max-width: 480px) {
-    margin-bottom: -120px;
   }
 }
 
 .card-input {
   margin-bottom: 20px;
+
   &__label {
     font-size: 14px;
     margin-bottom: 5px;
     font-weight: 500;
-    color: #1a3b5d;
     width: 100%;
     display: block;
     user-select: none;
   }
+
+  &__field {
+    position: relative;
+  }
+
   &__input {
     width: 100%;
-    height: 50px;
-    border-radius: 5px;
+    height: 42px;
+    border-radius: 6px;
     box-shadow: none;
     border: 1px solid #ced6e0;
     transition: all 0.3s ease-in-out;
     font-size: 18px;
-    padding: 5px 15px;
+    padding: 6px 12px;
     background: none;
-    color: #1a3b5d;
-    font-family: "Source Sans Pro", sans-serif;
 
     &:hover,
     &:focus {
-      border-color: #3d9cff;
+      border-color: #f8880f;
+      outline: none;
     }
 
     &:focus {
       box-shadow: 0px 10px 20px -13px rgba(32, 56, 117, 0.35);
     }
+
+    &--error {
+      border: 1px solid #cc0000;
+    }
+
     &.-select {
       -webkit-appearance: none;
       background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAeCAYAAABuUU38AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUxJREFUeNrM1sEJwkAQBdCsngXPHsQO9O5FS7AAMVYgdqAd2IGCDWgFnryLFQiCZ8EGnJUNimiyM/tnk4HNEAg/8y6ZmMRVqz9eUJvRaSbvutCZ347bXVJy/ZnvTmdJ862Me+hAbZCTs6GHpyUi1tTSvPnqTpoWZPUa7W7ncT3vK4h4zVejy8QzM3WhVUO8ykI6jOxoGA4ig3BLHcNFSCGqGAkig2yqgpEiMsjSfY9LxYQg7L6r0X6wS29YJiYQYecemY+wHrXD1+bklGhpAhBDeu/JfIVGxaAQ9sb8CI+CQSJ+QmJg0Ii/EE2MBiIXooHRQhRCkBhNhBcEhLkwf05ZCG8ICCOpk0MULmvDSY2M8UawIRExLIQIEgHDRoghihgRIgiigBEjgiFATBACAgFgghEwSAAGgoBCBBgYAg5hYKAIFYgHBo6w9RRgAFfy160QuV8NAAAAAElFTkSuQmCC");
@@ -729,6 +699,17 @@ export default {
       background-position: 90% center;
       background-repeat: no-repeat;
       padding-right: 30px;
+    }
+
+    &-error {
+      transform: translateY(-50%);
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      z-index: 0;
+      font-size: 12px;
+      font-weight: 500;
+      color: #cc0000;
     }
   }
 }
