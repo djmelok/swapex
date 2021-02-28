@@ -63,6 +63,6 @@ export default {
   target: 'static',
 
   router: {
-    base: '/swapex/dist/'
+    base: '/swapex/'
   }
 }
