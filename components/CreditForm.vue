@@ -9,13 +9,18 @@ form.card-form(@submit.prevent="sumbitSaveCard", method="post")
       .card-item__side.-front
         .card-item__focus(:class="{ '-active': focusElementStyle }", :style="focusElementStyle", ref="focusElement")
         .card-item__cover
-          img.card-item__bg(:src="`/images/credit-form/backgrounds/${currentCardBackground}.jpeg`")
+          img.card-item__bg(:src="require(`~/assets/images/credit-form/backgrounds/${currentCardBackground}.jpeg`)")
         .card-item__wrapper
           .card-item__top
-            img.card-item__chip(src="/images/credit-form/chip.png")
+            img.card-item__chip(:src="require(`~/assets/images/credit-form/chip.png`)")
             .card-item__type
               transition(name="slide-fade-up")
-                img.card-item__typeImg(:src="`/images/credit-form/types/${getCardType}.png`", v-if="getCardType", :key="getCardType", alt="")
+                img.card-item__typeImg(
+                  :src="require(`~/assets/images/credit-form/types/${getCardType}.png`)",
+                  v-if="getCardType",
+                  :key="getCardType",
+                  alt=""
+                )
           label.card-item__number(for="cardNumber", ref="cardNumber")
             template(v-if="getCardType === 'amex'")
               span(v-for="(n, $index) in amexCardMask", :key="$index")
@@ -59,14 +64,14 @@ form.card-form(@submit.prevent="sumbitSaveCard", method="post")
                   span(v-else, key="2") ГГ
       .card-item__side.-back
         .card-item__cover
-          img.card-item__bg(:src="`/images/credit-form/backgrounds/${currentCardBackground}.jpeg`")
+          img.card-item__bg(:src="require(`~/assets/images/credit-form/backgrounds/${currentCardBackground}.jpeg`)")
         .card-item__band
         .card-item__cvv
           .card-item__cvvTitle CVV
           .card-item__cvvBand
             span(v-for="(n, $index) in cardCvv", :key="$index") *
           .card-item__type
-            img.card-item__typeImg(:src="`/images/credit-form/types/${getCardType}.png`", v-if="getCardType")
+            img.card-item__typeImg(:src="require(`~/assets/images/credit-form/types/${getCardType}.png`)", v-if="getCardType")
   .card-form__inner(v-show="editing")
     .card-input
       label.card-input__label(for="cardNumber") Номер карты

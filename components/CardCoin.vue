@@ -1,6 +1,6 @@
 <template lang="pug">
 .card-coin(:class="getVisibilityClass")
-  img.card-coin__logo(:src="`/images/crypto/png/${logo}`")
+  img.card-coin__logo(:src="require(`~/assets/images/crypto/png/${logo}`)")
   .card-coin__info
     .card-coin__info-title
       span.card-coin__info-title-name {{ shortName }}
