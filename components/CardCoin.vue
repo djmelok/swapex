@@ -3,8 +3,8 @@
   img.card-coin__logo(:src="require(`~/assets/images/crypto/png/${logo}`)")
   .card-coin__info
     .card-coin__info-title
-      span.card-coin__info-title-name {{ shortName }}
-      span.card-coin__info-title-amount {{ shortAmount }}
+      span.card-coin__info-title-name {{ name }}
+      span.card-coin__info-title-amount {{ amount }}
       span.card-coin__info-title-hide
         i.fas.fa-star-of-life
         i.fas.fa-star-of-life
@@ -27,11 +27,11 @@ export default {
       type: String,
       required: true
     },
-    shortName: {
+    name: {
       type: String,
       required: true
     },
-    shortAmount: {
+    amount: {
       type: Number,
       required: true
     },
@@ -56,16 +56,16 @@ export default {
     getVisibilityClass() {
       return {
         'card-coin--hide': !this.$store.state.isShowData
-      }
+      };
     },
     getTrendClass() {
       return {
         'card-coin__info-course-rate-arrow--up': this.ratePercent >= 0,
         'card-coin__info-course-rate-arrow--down': this.ratePercent < 0
-      }
+      };
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

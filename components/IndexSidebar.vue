@@ -1,52 +1,52 @@
 <template lang="pug">
-.layout-sidebar(:class="getOpenClass")
-  .layout-sidebar__head
-    span.layout-sidebar__head-title Настройки
-    button.layout-sidebar__head-button(type="button", @click="CLOSE_SIDEBAR")
+.index-sidebar(:class="getOpenClass")
+  .index-sidebar__head
+    span.index-sidebar__head-title Настройки
+    button.index-sidebar__head-button(type="button", @click="CLOSE_SIDEBAR")
       i.fas.fa-times
-  .layout-sidebar__content
-    .layout-sidebar__content-title Профиль
-    button.layout-sidebar__content-button(type="button")
-      .layout-sidebar__content-button-icon
+  .index-sidebar__content
+    .index-sidebar__content-title Профиль
+    button.index-sidebar__content-button(type="button")
+      .index-sidebar__content-button-icon
         i.fas.fa-user
-      .layout-sidebar__content-button-title Профиль
-      .layout-sidebar__content-button-action
+      .index-sidebar__content-button-title Профиль
+      .index-sidebar__content-button-action
         i.fas.fa-chevron-right
-    button.layout-sidebar__content-button(type="button")
-      .layout-sidebar__content-button-icon
+    button.index-sidebar__content-button(type="button")
+      .index-sidebar__content-button-icon
         i.fas.fa-coins
-      .layout-sidebar__content-button-title Монеты
-      .layout-sidebar__content-button-action
+      .index-sidebar__content-button-title Монеты
+      .index-sidebar__content-button-action
         i.fas.fa-chevron-right
-    button.layout-sidebar__content-button(type="button")
-      .layout-sidebar__content-button-icon
+    button.index-sidebar__content-button(type="button")
+      .index-sidebar__content-button-icon
         i.fas.fa-sign-out-alt
-      .layout-sidebar__content-button-title Выход
-      .layout-sidebar__content-button-action
+      .index-sidebar__content-button-title Выход
+      .index-sidebar__content-button-action
         i.fas.fa-chevron-right
 
-    .layout-sidebar__content-title Безопасность
-    button.layout-sidebar__content-button(type="button")
-      .layout-sidebar__content-button-icon
+    .index-sidebar__content-title Безопасность
+    button.index-sidebar__content-button(type="button")
+      .index-sidebar__content-button-icon
         i.fas.fa-lock
-      .layout-sidebar__content-button-title PIN-код
-      .layout-sidebar__content-button-action
+      .index-sidebar__content-button-title PIN-код
+      .index-sidebar__content-button-action
         BaseSwitch
 
-    .layout-sidebar__content-title Другое
-    button.layout-sidebar__content-button(type="button")
-      .layout-sidebar__content-button-icon
+    .index-sidebar__content-title Другое
+    button.index-sidebar__content-button(type="button")
+      .index-sidebar__content-button-icon
         i.fas.fa-moon
-      .layout-sidebar__content-button-title Темный режим
-        .layout-sidebar__content-button-title-state Включен
-      .layout-sidebar__content-button-action
+      .index-sidebar__content-button-title Темный режим
+        .index-sidebar__content-button-title-state Включен
+      .index-sidebar__content-button-action
         BaseSwitch
-    button.layout-sidebar__content-button(type="button")
-      .layout-sidebar__content-button-icon
+    button.index-sidebar__content-button(type="button")
+      .index-sidebar__content-button-icon
         i.fas.fa-language
-      .layout-sidebar__content-button-title Language
-        .layout-sidebar__content-button-title-state Русский
-      .layout-sidebar__content-button-action
+      .index-sidebar__content-button-title Language
+        .index-sidebar__content-button-title-state Русский
+      .index-sidebar__content-button-action
         i.fas.fa-chevron-right
 </template>
 
@@ -57,7 +57,7 @@ export default {
   computed: {
     getOpenClass() {
       return {
-        'layout-sidebar--open': this.$store.state.isOpenSidebar
+        'index-sidebar--open': this.$store.state.isOpenSidebar
       }
     }
   },
@@ -68,7 +68,7 @@ export default {
 </script>
 
 <style lang="scss">
-.layout-sidebar {
+.index-sidebar {
   width: 100%;
   min-height: 100vh;
   background: #141414;

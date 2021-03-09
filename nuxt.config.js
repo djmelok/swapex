@@ -15,7 +15,7 @@ export default {
     ],
     script: [
       {
-        src: "./scripts/fontawesome/js/all.min.js",
+        src: "/scripts/fontawesome/js/all.min.js",
         defer: true
       },
     ],

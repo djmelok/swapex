@@ -1,27 +1,6 @@
 <template lang="pug">
-.buy
-  HeadPage(title="Купить")
-  .buy__content
-    .buy__content-operation
-      .buy__content-operation-title
-        img.buy__content-operation-title-img(src="~/assets/images/icons/arrow_line_up_right.png")
-        span.buy__content-operation-title-text Отдать
-      input.buy__content-operation-input(v-model.number="inputTransfer", inputmode="decimal", type="number", value="", placeholder="0.00")
-      BaseSelect.buy__content-operation-select(:options="selectTransfer", @input="selectHandler")
-    .buy__content-payment
-      button.buy__content-payment-choice(type="button")
-        img(src="~/assets/images/icons/visa-master-dark.png")
-      .buy__content-payment-line
-      button.buy__content-payment-lock(type="button")
-        i.fas.fa-lock
-    .buy__content-operation
-      .buy__content-operation-title
-        img.buy__content-operation-title-img(src="~/assets/images/icons/arrow_line_down_left.png")
-        span.buy__content-operation-title-text Получить
-      input.buy__content-operation-input(v-model.number="inputReceive", inputmode="decimal", type="number", value="", placeholder="0.00")
-      BaseSelect.buy__content-operation-select(:options="selectReceive", @input="selectHandler")
-    CreditForm.buy__content-card(@editCardHandler="editCardHandler", @savedCardHandler="savedCardHandler")
-    button.buy__content-button.primary-button(v-if="isValidAction", type="button") Купить
+.transfer
+  HeadPage(title="Перевод")
 </template>
 
 <script>

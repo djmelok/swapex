@@ -25,6 +25,7 @@ module.exports = {
       named: 'never',
       asyncArrow: 'always'
     }],
-    curly: [2, "multi-line"]
+    curly: [2, "multi-line"],
+    semi: ["error", "always"]
   },
 }

@@ -1,12 +1,12 @@
 <template lang="pug">
-.layout-header
-  nuxt-link.layout-header__logo(to="/")
+.index-header
+  nuxt-link.index-header__logo(to="/")
     img(src="~/assets/images/logo.png")
     span wapex
-  ProfileBalance.layout-header__balance(:class="getDisplayClass")
-  button.layout-header__button(type="button")
+  ProfileBalance.index-header__balance(:class="getDisplayClass")
+  button.index-header__button(type="button")
     i.fab.fa-telegram
-  button.layout-header__button(type="button", @click="OPEN_SIDEBAR")
+  button.index-header__button(type="button", @click="OPEN_SIDEBAR")
     i.fas.fa-bars
 </template>
 
@@ -22,7 +22,7 @@ export default {
   computed: {
     getDisplayClass() {
       return {
-        'layout-header__balance--display': this.scrollY > 140
+        'index-header__balance--display': this.scrollY > 140
       }
     }
   },
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss">
-.layout-header {
+.index-header {
   width: 100%;
   display: flex;
   align-items: center;

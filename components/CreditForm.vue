@@ -161,97 +161,97 @@ export default {
         year: 0,
         cvv: 0
       }
-    }
+    };
   },
   computed: {
     getCardType() {
-      let re = /^4/
-      if (this.cardNumber.match(re) != null) return 'visa'
+      let re = /^4/;
+      if (this.cardNumber.match(re) != null) return 'visa';
 
-      re = /^(34|37)/
-      if (this.cardNumber.match(re) != null) return 'amex'
+      re = /^(34|37)/;
+      if (this.cardNumber.match(re) != null) return 'amex';
 
-      re = /^5[1-5]/
-      if (this.cardNumber.match(re) != null) return 'mastercard'
+      re = /^5[1-5]/;
+      if (this.cardNumber.match(re) != null) return 'mastercard';
 
-      re = /^6011/
-      if (this.cardNumber.match(re) != null) return 'discover'
+      re = /^6011/;
+      if (this.cardNumber.match(re) != null) return 'discover';
 
-      re = /^9792'/
-      if (this.cardNumber.match(re) != null) return 'troy'
+      re = /^9792'/;
+      if (this.cardNumber.match(re) != null) return 'troy';
 
-      re = /^2/
-      if (this.cardNumber.match(re) != null) return 'mir'
+      re = /^2/;
+      if (this.cardNumber.match(re) != null) return 'mir';
 
-      return 'none'
+      return 'none';
     },
     getCardName() {
-      return this.cardName.replace(/\s\s+/g, ' ')
+      return this.cardName.replace(/\s\s+/g, ' ');
     },
     generateCardNumberMask() {
-      return this.getCardType === 'amex' ? this.amexCardMask : this.otherCardMask
+      return this.getCardType === 'amex' ? this.amexCardMask : this.otherCardMask;
     },
     minCardMonth() {
-      if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1
-      return 1
+      if (this.cardYear === this.minCardYear) return new Date().getMonth() + 1;
+      return 1;
     }
   },
   watch: {
     editing(value) {
-      this.$emit('editCardHandler', value)
+      this.$emit('editCardHandler', value);
     },
     cardYear() {
       if (this.cardMonth < this.minCardMonth) {
-        this.cardMonth = ''
+        this.cardMonth = '';
       }
     }
   },
   mounted() {
-    this.cardNumberTemp = this.otherCardMask
-    document.getElementById('cardNumber').focus()
+    this.cardNumberTemp = this.otherCardMask;
+    document.getElementById('cardNumber').focus();
   },
   methods: {
     flipCard(status) {
-      this.isCardFlipped = status
+      this.isCardFlipped = status;
     },
     focusInput(e) {
-      this.isInputFocused = true
-      const targetRef = e.target.dataset.ref
-      const target = this.$refs[targetRef]
+      this.isInputFocused = true;
+      const targetRef = e.target.dataset.ref;
+      const target = this.$refs[targetRef];
       this.focusElementStyle = {
         width: `${target.offsetWidth}px`,
         height: `${target.offsetHeight}px`,
         transform: `translateX(${target.offsetLeft}px) translateY(${target.offsetTop}px)`
-      }
+      };
     },
     blurInput() {
-      const vm = this
+      const vm = this;
       setTimeout(() => {
         if (!vm.isInputFocused) {
-          vm.focusElementStyle = null
+          vm.focusElementStyle = null;
         }
-      }, 300)
-      vm.isInputFocused = false
+      }, 300);
+      vm.isInputFocused = false;
     },
     sumbitSaveCard() {
-      this.errors.number = ''
+      this.errors.number = '';
 
       if (this.getCardType === 'none' || this.cardNumber.length < 17) {
-        this.errors.number = 'Неправильный формат карты'
-        return false
+        this.errors.number = 'Неправильный формат карты';
+        return false;
       }
 
-      this.saveCard.number = this.cardNumber
-      this.saveCard.name = this.cardName
-      this.saveCard.month = this.cardMonth
-      this.saveCard.year = this.cardYear
-      this.saveCard.cvv = this.cardCvv
+      this.saveCard.number = this.cardNumber;
+      this.saveCard.name = this.cardName;
+      this.saveCard.month = this.cardMonth;
+      this.saveCard.year = this.cardYear;
+      this.saveCard.cvv = this.cardCvv;
 
-      this.editing = false
-      this.$emit('savedCardHandler', true)
+      this.editing = false;
+      this.$emit('savedCardHandler', true);
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

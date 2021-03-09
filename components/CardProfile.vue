@@ -2,7 +2,7 @@
 .card-profile
   .card-profile__balance
     .card-profile__balance-title Баланс
-    .card-profile__balance-date Сегодня, 22 Февр.
+    .card-profile__balance-date Сегодня, 8 Марта
     ProfileBalance
   .card-profile__interactive
     button.card-profile__interactive-append(type="button")
@@ -13,21 +13,20 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions } from 'vuex';
 
 export default {
   computed: {
     getClassIcon() {
       return {
         'card-profile__interactive-hiding--hide': !this.$store.state.isShowData
-      }
+      };
     }
-
   },
   methods: {
     ...mapActions(['TOGGLE_DATA'])
   }
-}
+};
 </script>
 
 <style lang="scss">
